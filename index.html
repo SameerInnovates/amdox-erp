@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- This tells the browser what kind of document this is -->
+  <meta charset="UTF-8">
+
+  <!-- This makes the page look correct on mobile phones -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Title shown on the browser tab -->
+  <title>Amdox ERP – Login</title>
+
+  <!-- Bootstrap 5 CSS – gives us ready-made styles and layout tools -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons – small icons we use in the form -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <!-- Google Font – Inter is a clean, professional font used in many SaaS apps -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Our own custom CSS file -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <!-- 
+    This is the main wrapper.
+    d-flex = display flex (side-by-side layout)
+    min-vh-100 = minimum height is 100% of the screen
+  -->
+  <div class="login-wrapper d-flex min-vh-100">
+
+    <!-- ───────────────────────────────────────────
+         LEFT PANEL – Branding / Hero side
+    ─────────────────────────────────────────────── -->
+    <div class="login-brand d-none d-lg-flex flex-column justify-content-between p-5">
+      
+      <!-- Logo at the top -->
+      <div class="brand-logo">
+        <!-- We use a text-based logo with an icon – no image file needed -->
+        <i class="bi bi-grid-3x3-gap-fill me-2"></i>
+        <span>Amdox ERP</span>
+      </div>
+
+      <!-- Center message -->
+      <div class="brand-message">
+        <h1>Manage your entire<br>enterprise in one place.</h1>
+        <p>Finance · HR · Inventory · Analytics — all unified.</p>
+
+        <!-- Three feature pills -->
+        <div class="brand-pills mt-4">
+          <span><i class="bi bi-check-circle-fill me-1"></i> Real-time Analytics</span>
+          <span><i class="bi bi-check-circle-fill me-1"></i> Employee Management</span>
+          <span><i class="bi bi-check-circle-fill me-1"></i> Inventory Tracking</span>
+        </div>
+      </div>
+
+      <!-- Footer text at the bottom -->
+      <div class="brand-footer">
+        © 2026 Amdox Technologies. All rights reserved.
+      </div>
+
+    </div>
+
+    <!-- ───────────────────────────────────────────
+         RIGHT PANEL – Login Form
+    ─────────────────────────────────────────────── -->
+    <div class="login-form-side d-flex align-items-center justify-content-center flex-grow-1 p-4">
+
+      <!-- The white card that holds the form -->
+      <div class="login-card">
+
+        <!-- Mobile-only logo (hidden on desktop because left panel shows it) -->
+        <div class="d-flex d-lg-none align-items-center mb-4 mobile-logo">
+          <i class="bi bi-grid-3x3-gap-fill me-2"></i>
+          <span>Amdox ERP</span>
+        </div>
+
+        <!-- Heading -->
+        <h2 class="login-title">Welcome back</h2>
+        <p class="login-subtitle">Sign in to your ERP dashboard</p>
+
+        <!-- THE FORM -->
+        <!-- onsubmit="return handleLogin(event)" calls our JS function when submitted -->
+        <form onsubmit="return handleLogin(event)" novalidate>
+
+          <!-- Email Field -->
+          <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <!-- input-group lets us put an icon inside the input box -->
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="bi bi-envelope"></i>
+              </span>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                placeholder="admin@amdox.com"
+                required
+              >
+            </div>
+          </div>
+
+          <!-- Password Field -->
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="bi bi-lock"></i>
+              </span>
+              <!-- id="passwordInput" so our JS can find it -->
+              <input
+                type="password"
+                class="form-control"
+                id="passwordInput"
+                placeholder="Enter your password"
+                required
+              >
+              <!-- Eye icon to show/hide password -->
+              <button
+                class="input-group-text btn-eye"
+                type="button"
+                onclick="togglePassword()"
+                title="Show/Hide password"
+              >
+                <!-- id="eyeIcon" so JS can swap the icon -->
+                <i class="bi bi-eye" id="eyeIcon"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Remember me + Forgot password row -->
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="rememberMe">
+              <label class="form-check-label" for="rememberMe">Remember me</label>
+            </div>
+            <a href="#" class="forgot-link">Forgot password?</a>
+          </div>
+
+          <!-- Error message box (hidden by default) -->
+          <!-- id="loginError" so JS can show/hide it -->
+          <div id="loginError" class="alert alert-danger d-none" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            Invalid email or password. Try: admin@amdox.com / admin123
+          </div>
+
+          <!-- Submit Button -->
+          <!-- w-100 = full width button -->
+          <button type="submit" class="btn btn-primary w-100 login-btn">
+            <span id="btnText">Sign In</span>
+            <!-- Spinner shown during fake loading -->
+            <span id="btnSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status"></span>
+          </button>
+
+          <!-- Demo credentials hint -->
+          <div class="demo-hint mt-3 text-center">
+            <i class="bi bi-info-circle me-1"></i>
+            Demo: <strong>admin@amdox.com</strong> / <strong>admin123</strong>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+
+  </div><!-- end login-wrapper -->
+
+  <!-- Bootstrap 5 JavaScript (needed for Bootstrap components to work) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Our Login JavaScript (inline here to keep things simple) -->
+  <script>
+
+    // ── FUNCTION 1: Toggle password visibility ──────────────────────
+    // This runs when the user clicks the eye icon
+    function togglePassword() {
+      // Find the password input box by its id
+      const input = document.getElementById('passwordInput');
+      // Find the eye icon by its id
+      const icon  = document.getElementById('eyeIcon');
+
+      // If the input is currently "password" type (hidden), switch to "text" (visible)
+      if (input.type === 'password') {
+        input.type = 'text';                    // show the text
+        icon.className = 'bi bi-eye-slash';     // change icon to "eye with slash"
+      } else {
+        input.type = 'password';                // hide the text again
+        icon.className = 'bi bi-eye';           // change icon back to normal eye
+      }
+    }
+
+    // ── FUNCTION 2: Handle login form submit ─────────────────────────
+    // "event" is passed automatically by the browser when form is submitted
+    function handleLogin(event) {
+      // Prevent the page from refreshing (default browser behaviour on form submit)
+      event.preventDefault();
+
+      // Read what the user typed in the email and password fields
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('passwordInput').value.trim();
+
+      // Our fake "correct" credentials
+      const correctEmail    = 'admin@amdox.com';
+      const correctPassword = 'admin123';
+
+      // Hide any previous error message
+      document.getElementById('loginError').classList.add('d-none');
+
+      // CHECK: did the user enter the right details?
+      if (email === correctEmail && password === correctPassword) {
+        // ✅ Correct – show a loading spinner, then go to dashboard
+
+        // Disable the button so they can't click twice
+        document.querySelector('.login-btn').disabled = true;
+
+        // Show the spinner inside the button
+        document.getElementById('btnSpinner').classList.remove('d-none');
+
+        // Change button text
+        document.getElementById('btnText').textContent = 'Signing in…';
+
+        // Wait 1.5 seconds (fake loading), then redirect to dashboard.html
+        setTimeout(function() {
+          window.location.href = 'dashboard.html';
+        }, 1500);
+
+      } else {
+        // ❌ Wrong credentials – show the red error box
+        document.getElementById('loginError').classList.remove('d-none');
+      }
+
+      // Return false prevents any further default browser action
+      return false;
+    }
+
+  </script>
+
+</body>
+</html>
