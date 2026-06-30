@@ -53,6 +53,8 @@ function saveTransactions(transactions) {
 
 // ── INITIALIZE ────────────────────────────────────────
 function init() {
+  showSkeletonRows('transactionTableBody', 7, 5);
+
   if (getTransactions().length === 0) {
     saveTransactions(sampleTransactions);
   }
@@ -258,12 +260,14 @@ function saveTransaction() {
   const amount       = document.getElementById('txnAmount').value;
   const date         = document.getElementById('txnDate').value;
 
-  if (!description || !category || !amount || !date) {
-    const errEl = document.getElementById('formError');
-    errEl.textContent = 'Please fill in all required fields.';
-    errEl.classList.remove('d-none');
-    return;
-  }
+ const isValid = validateFields([
+  { id: 'txnDescription', label: 'Description' },
+  { id: 'txnCategory',    label: 'Category' },
+  { id: 'txnAmount',      label: 'Amount' },
+  { id: 'txnDate',        label: 'Date' }
+]);
+
+if (!isValid) return;
 
   const transactions = getTransactions();
 

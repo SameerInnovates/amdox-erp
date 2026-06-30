@@ -99,12 +99,14 @@ function saveEmployees(employees) {
 
 // ── INITIALIZE ────────────────────────────────────────
 // This runs when the page first loads.
+
 function init() {
-  // If LocalStorage is empty, load sample data
+  // Show skeleton rows immediately while we check LocalStorage
+  showSkeletonRows('employeeTableBody', 8, 5);
+
   if (getEmployees().length === 0) {
     saveEmployees(sampleEmployees);
   }
-  // Render everything
   handleSearch();
   updateSummaryCards();
 }
@@ -374,12 +376,15 @@ function saveEmployee() {
   const salary   = document.getElementById('empSalary').value;
 
   // Validate required fields
-  if (!name || !email || !dept || !role) {
-    const errEl = document.getElementById('formError');
-    errEl.textContent = 'Please fill in all required fields (Name, Email, Department, Role).';
-    errEl.classList.remove('d-none');
-    return; // stop here, don't save
-  }
+// NEW CODE
+const isValid = validateFields([
+  { id: 'empName',  label: 'Name' },
+  { id: 'empEmail', label: 'Email' },
+  { id: 'empDept',  label: 'Department' },
+  { id: 'empRole',  label: 'Role' }
+]);
+
+if (!isValid) return;
 
   const employees = getEmployees();
 

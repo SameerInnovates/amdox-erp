@@ -231,3 +231,88 @@ function getInitials(name) {
     .toUpperCase()               // make uppercase
     .substring(0, 2);            // max 2 letters
 }
+
+
+// ── 8. AUTO-HIGHLIGHT ACTIVE SIDEBAR LINK ─────────────
+// Looks at the current page's filename and adds the
+// "active" class to the matching sidebar link automatically.
+// This runs on every page that includes utils.js.
+function highlightActiveNavLink() {
+  // Get just the filename from the URL
+  // e.g. "https://site.com/employees.html" → "employees.html"
+  const currentPage = window.location.pathname.split('/').pop();
+
+  // Find every sidebar link
+  const links = document.querySelectorAll('.nav-link');
+
+  links.forEach(link => {
+    // Get the filename this link points to
+    const linkPage = link.getAttribute('href');
+
+    // Remove active class from all links first
+    link.classList.remove('active');
+
+    // Add active class only to the matching one
+    if (linkPage === currentPage) {
+      link.classList.add('active');
+    }
+  });
+}
+
+// Run this automatically whenever the page loads
+window.addEventListener('DOMContentLoaded', highlightActiveNavLink);
+
+
+// ── 9. SHOW SKELETON ROWS WHILE LOADING ───────────────
+// Call this BEFORE your real data loads, to show
+// placeholder rows instead of a blank table.
+// tbodyId = the table body to fill
+// columns = how many columns the table has
+// rows = how many skeleton rows to show
+function showSkeletonRows(tbodyId, columns, rows = 5) {
+  const tbody = document.getElementById(tbodyId);
+  if (!tbody) return;
+
+  let html = '';
+  for (let r = 0; r < rows; r++) {
+    html += '<tr class="skeleton-row">';
+    for (let c = 0; c < columns; c++) {
+      html += `<td><div class="skeleton-bar" style="width:${60 + Math.random()*30}%;"></div></td>`;
+    }
+    html += '</tr>';
+  }
+  tbody.innerHTML = html;
+}
+
+// ── 10. VALIDATE REQUIRED FIELDS ──────────────────────
+// Pass an array of {id, label} for fields that are required.
+// Highlights empty ones in red and returns true/false.
+//
+// Usage:
+// const isValid = validateFields([
+//   { id: 'empName', label: 'Name' },
+//   { id: 'empEmail', label: 'Email' }
+// ]);
+function validateFields(fields) {
+  let allValid = true;
+  let missingLabels = [];
+
+  fields.forEach(field => {
+    const el = document.getElementById(field.id);
+    if (!el) return;
+
+    if (!el.value || el.value.trim() === '') {
+      el.classList.add('is-invalid');
+      missingLabels.push(field.label);
+      allValid = false;
+    } else {
+      el.classList.remove('is-invalid');
+    }
+  });
+
+  if (!allValid) {
+    showToast('Missing: ' + missingLabels.join(', '), 'error');
+  }
+
+  return allValid;
+}

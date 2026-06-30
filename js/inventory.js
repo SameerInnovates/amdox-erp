@@ -73,14 +73,16 @@ function getStockStatus(qty, threshold) {
 
 
 // ── INITIALIZE ────────────────────────────────────────
+
 function init() {
+  showSkeletonRows('productTableBody', 8, 5);
+
   if (getProducts().length === 0) {
     saveProducts(sampleProducts);
   }
   handleSearch();
   updateSummaryCards();
 }
-
 
 // ── UPDATE SUMMARY CARDS ──────────────────────────────
 function updateSummaryCards() {
@@ -300,12 +302,14 @@ function saveProduct() {
   const supplier  = document.getElementById('prodSupplier').value.trim();
 
   // Validate required fields
-  if (!name || !category || qty === '' || price === '') {
-    const errEl = document.getElementById('formError');
-    errEl.textContent = 'Please fill in all required fields (Name, Category, Quantity, Price).';
-    errEl.classList.remove('d-none');
-    return;
-  }
+const isValid = validateFields([
+  { id: 'prodName',     label: 'Name' },
+  { id: 'prodCategory', label: 'Category' },
+  { id: 'prodQty',      label: 'Quantity' },
+  { id: 'prodPrice',    label: 'Price' }
+]);
+
+if (!isValid) return;
 
   const products = getProducts();
 
