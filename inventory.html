@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amdox ERP – Inventory</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <i class="bi bi-grid-3x3-gap-fill me-2"></i>
+      <span>Amdox ERP</span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">MAIN MENU</div>
+      <a href="dashboard.html" class="nav-link">
+        <i class="bi bi-speedometer2"></i><span>Dashboard</span>
+      </a>
+      <a href="employees.html" class="nav-link">
+        <i class="bi bi-people"></i><span>Employees</span>
+      </a>
+      <a href="inventory.html" class="nav-link active">
+        <i class="bi bi-box-seam"></i><span>Inventory</span>
+      </a>
+      <a href="finance.html" class="nav-link">
+        <i class="bi bi-cash-stack"></i><span>Finance</span>
+      </a>
+      <a href="analytics.html" class="nav-link">
+        <i class="bi bi-bar-chart-line"></i><span>Analytics</span>
+      </a>
+      <div class="nav-divider"></div>
+      <div class="nav-section-label">SYSTEM</div>
+      <a href="#" class="nav-link">
+        <i class="bi bi-gear"></i><span>Settings</span>
+      </a>
+      <a href="index.html" class="nav-link logout-link">
+        <i class="bi bi-box-arrow-left"></i><span>Logout</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content" id="mainContent">
+
+    <!-- NAVBAR -->
+    <header class="top-navbar">
+      <button class="hamburger-btn" onclick="toggleSidebar()">
+        <i class="bi bi-list"></i>
+      </button>
+      <div class="navbar-title">
+        <h5>Inventory Management</h5>
+        <small>Home / Inventory</small>
+      </div>
+      <div class="navbar-right">
+        <div class="search-box">
+          <i class="bi bi-search"></i>
+          <input type="text" placeholder="Search...">
+        </div>
+        <button class="icon-btn">
+          <i class="bi bi-bell"></i>
+          <span class="badge-dot">3</span>
+        </button>
+        <div class="profile-avatar">A</div>
+      </div>
+    </header>
+
+    <!-- PAGE BODY -->
+    <main class="page-body">
+
+      <!-- SUMMARY CARDS -->
+      <div class="row g-3 mb-4">
+        <div class="col-12 col-sm-6 col-xl-3">
+          <div class="summary-card">
+            <div class="summary-icon blue">
+              <i class="bi bi-box-seam-fill"></i>
+            </div>
+            <div class="summary-info">
+              <span class="summary-label">Total Products</span>
+              <span class="summary-value" id="totalProducts">0</span>
+              <span class="summary-sub">All categories</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+          <div class="summary-card">
+            <div class="summary-icon green">
+              <i class="bi bi-currency-rupee"></i>
+            </div>
+            <div class="summary-info">
+              <span class="summary-label">Inventory Value</span>
+              <span class="summary-value" id="totalValue">₹0</span>
+              <span class="summary-sub">Total stock worth</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+          <div class="summary-card">
+            <div class="summary-icon orange">
+              <i class="bi bi-exclamation-triangle-fill"></i>
+            </div>
+            <div class="summary-info">
+              <span class="summary-label">Low Stock</span>
+              <span class="summary-value" id="lowStockCount">0</span>
+              <span class="summary-sub">Needs reordering</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+          <div class="summary-card">
+            <div class="summary-icon red">
+              <i class="bi bi-x-circle-fill"></i>
+            </div>
+            <div class="summary-info">
+              <span class="summary-label">Out of Stock</span>
+              <span class="summary-value" id="outStockCount">0</span>
+              <span class="summary-sub">Unavailable items</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTION BAR -->
+      <div class="action-bar">
+        <div class="action-search">
+          <i class="bi bi-search"></i>
+          <input type="text" id="searchInput"
+            placeholder="Search by product name..."
+            oninput="handleSearch()">
+        </div>
+        <select class="action-select" id="categoryFilter"
+          onchange="handleSearch()">
+          <option value="">All Categories</option>
+          <option>Electronics</option>
+          <option>Furniture</option>
+          <option>Stationery</option>
+          <option>Hardware</option>
+          <option>Software</option>
+          <option>Accessories</option>
+        </select>
+        <button class="btn-add" onclick="openAddModal()">
+          <i class="bi bi-plus-lg"></i> Add Product
+        </button>
+      </div>
+
+      <!-- DATA TABLE CARD -->
+      <div class="data-card">
+        <div class="data-card-header">
+          <h6>Product Inventory</h6>
+          <span id="recordCount"
+            style="font-size:0.8rem; color:#64748b;"></span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="erp-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total Value</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="productTableBody"></tbody>
+          </table>
+        </div>
+
+        <div class="pagination-bar">
+          <span id="paginationInfo"></span>
+          <div class="pagination-btns" id="paginationBtns"></div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"
+    onclick="toggleSidebar()"></div>
+
+  <!-- ═══════════════════════════════════════════
+       ADD / EDIT PRODUCT MODAL
+  ════════════════════════════════════════════ -->
+  <div class="modal fade" id="productModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitle">Add Product</h5>
+          <button type="button" class="btn-close"
+            data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+          <input type="hidden" id="prodId">
+
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label">Product Name *</label>
+              <input type="text" class="form-control"
+                id="prodName" placeholder="e.g. Wireless Mouse">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Category *</label>
+              <select class="form-select" id="prodCategory">
+                <option value="">Select Category</option>
+                <option>Electronics</option>
+                <option>Furniture</option>
+                <option>Stationery</option>
+                <option>Hardware</option>
+                <option>Software</option>
+                <option>Accessories</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">SKU / Code</label>
+              <input type="text" class="form-control"
+                id="prodSku" placeholder="e.g. ELEC-001">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Quantity in Stock *</label>
+              <input type="number" class="form-control"
+                id="prodQty" placeholder="e.g. 50">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Unit Price (₹) *</label>
+              <input type="number" class="form-control"
+                id="prodPrice" placeholder="e.g. 499">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Low Stock Threshold</label>
+              <input type="number" class="form-control"
+                id="prodThreshold" placeholder="e.g. 10" value="10">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Supplier</label>
+              <input type="text" class="form-control"
+                id="prodSupplier" placeholder="e.g. TechSource Pvt Ltd">
+            </div>
+          </div>
+
+          <div id="formError"
+            class="alert alert-danger mt-3 d-none"
+            style="font-size:0.85rem; border-radius:8px;"></div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-cancel"
+            data-bs-dismiss="modal">Cancel</button>
+          <button class="btn-save"
+            onclick="saveProduct()">Save Product</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/inventory.js"></script>
+</body>
+</html>
