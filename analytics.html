@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amdox ERP – Analytics</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <i class="bi bi-grid-3x3-gap-fill me-2"></i>
+      <span>Amdox ERP</span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">MAIN MENU</div>
+      <a href="dashboard.html" class="nav-link">
+        <i class="bi bi-speedometer2"></i><span>Dashboard</span>
+      </a>
+      <a href="employees.html" class="nav-link">
+        <i class="bi bi-people"></i><span>Employees</span>
+      </a>
+      <a href="inventory.html" class="nav-link">
+        <i class="bi bi-box-seam"></i><span>Inventory</span>
+      </a>
+      <a href="finance.html" class="nav-link">
+        <i class="bi bi-cash-stack"></i><span>Finance</span>
+      </a>
+      <a href="analytics.html" class="nav-link active">
+        <i class="bi bi-bar-chart-line"></i><span>Analytics</span>
+      </a>
+      <div class="nav-divider"></div>
+      <div class="nav-section-label">SYSTEM</div>
+      <a href="#" class="nav-link">
+        <i class="bi bi-gear"></i><span>Settings</span>
+      </a>
+      <a href="index.html" class="nav-link logout-link">
+        <i class="bi bi-box-arrow-left"></i><span>Logout</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content" id="mainContent">
+
+    <!-- NAVBAR -->
+    <header class="top-navbar">
+      <button class="hamburger-btn" onclick="toggleSidebar()">
+        <i class="bi bi-list"></i>
+      </button>
+      <div class="navbar-title">
+        <h5>Analytics</h5>
+        <small>Home / Analytics</small>
+      </div>
+      <div class="navbar-right">
+        <div class="search-box">
+          <i class="bi bi-search"></i>
+          <input type="text" placeholder="Search...">
+        </div>
+        <button class="icon-btn">
+          <i class="bi bi-bell"></i>
+          <span class="badge-dot">3</span>
+        </button>
+        <div class="profile-avatar">A</div>
+      </div>
+    </header>
+
+    <!-- PAGE BODY -->
+    <main class="page-body">
+
+      <!-- QUICK STATS ROW -->
+      <div class="row g-3 mb-4">
+        <div class="col-12 col-sm-6 col-xl-3">
+          <div class="summary-card">
+            <div class="summary-icon green">
+              <i class="bi bi-graph-up-arrow"></i>
+            </div>
+            <div class="summary-info">
+              <span class="summary-label">Best Month</span>
+              <span class="summary-value" id="bestMonth">—</span>
+              <span class="summary-sub" id="bestMonthValue">₹0 revenue</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+          <div class="summary-card">
+            <div class="summary-icon red">
+              <i class="bi bi-graph-down-arrow"></i>
+            </div>
+            <div class="summary-info">
+              <span class="summary-label">Highest Expense Month</span>
+              <span class="summary-value" id="worstMonth">—</span>
+              <span class="summary-sub" id="worstMonthValue">₹0 spent</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+          <div class="summary-card">
+            <div class="summary-icon blue">
+              <i class="bi bi-bar-chart-fill"></i>
+            </div>
+            <div class="summary-info">
+              <span class="summary-label">Avg Monthly Revenue</span>
+              <span class="summary-value" id="avgRevenue">₹0</span>
+              <span class="summary-sub">Based on all records</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+          <div class="summary-card">
+            <div class="summary-icon purple">
+              <i class="bi bi-people-fill"></i>
+            </div>
+            <div class="summary-info">
+              <span class="summary-label">Team Growth</span>
+              <span class="summary-value" id="teamGrowth">+0</span>
+              <span class="summary-sub">New hires (last 6 months)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROW 1: Revenue/Expense Trend (big) + Inventory Pie (small) -->
+      <div class="row g-4 mb-4">
+        <div class="col-12 col-lg-8">
+          <div class="chart-card" style="background:#fff; border-radius:14px; padding:1.25rem; box-shadow:0 1px 6px rgba(0,0,0,0.06); border:1px solid #f1f5f9; height:100%;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+              <h6 style="font-weight:600; margin:0;">Revenue vs Expense Trend</h6>
+              <span class="chart-badge" style="background:#eff6ff; color:#2563eb; font-size:0.75rem; font-weight:600; padding:3px 10px; border-radius:20px;">Last 6 Months</span>
+            </div>
+            <canvas id="trendChart" height="110"></canvas>
+          </div>
+        </div>
+        <div class="col-12 col-lg-4">
+          <div class="chart-card" style="background:#fff; border-radius:14px; padding:1.25rem; box-shadow:0 1px 6px rgba(0,0,0,0.06); border:1px solid #f1f5f9; height:100%;">
+            <div style="margin-bottom:1rem;">
+              <h6 style="font-weight:600; margin:0;">Inventory by Category</h6>
+            </div>
+            <canvas id="inventoryPie" height="200"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROW 2: Employee Growth (small) + Top Expense Categories (big) -->
+      <div class="row g-4">
+        <div class="col-12 col-lg-4">
+          <div class="chart-card" style="background:#fff; border-radius:14px; padding:1.25rem; box-shadow:0 1px 6px rgba(0,0,0,0.06); border:1px solid #f1f5f9; height:100%;">
+            <div style="margin-bottom:1rem;">
+              <h6 style="font-weight:600; margin:0;">Employees by Department</h6>
+            </div>
+            <canvas id="empChart" height="200"></canvas>
+          </div>
+        </div>
+        <div class="col-12 col-lg-8">
+          <div class="chart-card" style="background:#fff; border-radius:14px; padding:1.25rem; box-shadow:0 1px 6px rgba(0,0,0,0.06); border:1px solid #f1f5f9; height:100%;">
+            <div style="margin-bottom:1rem;">
+              <h6 style="font-weight:600; margin:0;">Top 5 Expense Categories</h6>
+            </div>
+            <canvas id="expenseChart" height="120"></canvas>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"
+    onclick="toggleSidebar()"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/analytics.js"></script>
+</body>
+</html>
