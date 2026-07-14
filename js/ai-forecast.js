@@ -4,7 +4,8 @@
 // ═══════════════════════════════════════════════════
 
 // The address where your Flask server is running
-const AI_API_URL = 'http://127.0.0.1:5000/predict';
+// Replace with YOUR actual Render URL
+const AI_API_URL = 'https://amdox-erp-ai.onrender.com/predict';
 
 
 // ── GET LAST 6 MONTHS OF REVENUE FROM FINANCE DATA ────
